@@ -1,0 +1,5 @@
+LOGIN
+* Olvidé mi Contraseña --> Ir a página de recupero de Contraseña
+* Crear Profile para cambio de contraseña o eliminación de cuenta (Se podría pasar el logout a esta sección)
+
+
