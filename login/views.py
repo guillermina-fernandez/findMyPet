@@ -7,20 +7,6 @@ from .forms import CustomUserCreationForm
 # Create your views here.
 
 
-def authenticate_user(request, user, password):
-    auth_user = authenticate(request, username=user, password=password)
-    if not auth_user:
-        auth_user = authenticate(request, email=user, password=password)
-    if auth_user:
-        login(request, auth_user)
-        error = None
-    else:
-        error_message(request, 'Usuario/Email o Contraseña incorrectos.')
-        error = 'login'
-    return render(request, 'home.html', {'user_form': CustomUserCreationForm,
-                                            'error': error})
-
-
 class HomeView(View):
 
     def get(self, request):
@@ -30,12 +16,32 @@ class HomeView(View):
         if 'btn_login' in request.POST:
             user = request.POST.get('inp_username')
             password = request.POST.get('inp_password')
-            authenticate_user(request, user, password)
+            auth_user = authenticate(request, username=user, password=password)
+            if not auth_user:
+                auth_user = authenticate(request, email=user, password=password)
+            if auth_user:
+                login(request, auth_user)
+                error = None
+            else:
+                error_message(request, 'Usuario/Email o Contraseña incorrectos.')
+                error = 'login'
+            return render(request, 'home.html', {'user_form': CustomUserCreationForm,
+                                            'error': error})
         else:
             user_form = CustomUserCreationForm(request.POST)
             if user_form.is_valid():
                 new_user = user_form.save()
-                authenticate_user(request, new_user.username, new_user.password)
+                auth_user = authenticate(request, username=new_user.username, password=new_user.password)
+                if not auth_user:
+                    auth_user = authenticate(request, email=user, password=password)
+                if auth_user:
+                    login(request, auth_user)
+                    error = None
+                else:
+                    error_message(request, 'Usuario/Email o Contraseña incorrectos.')
+                    error = 'login'
+                return render(request, 'home.html', {'user_form': CustomUserCreationForm,
+                                                'error': error})
             else:
                 return render(request, 'home.html', {'user_form': user_form,
                                                     'error': 'new_user'})
