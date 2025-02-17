@@ -3,6 +3,7 @@ from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from general_functions import error_message
 from .forms import CustomUserCreationForm
+from petPosts.models import PetPost
 
 # Create your views here.
 
@@ -10,7 +11,8 @@ from .forms import CustomUserCreationForm
 class HomeView(View):
 
     def get(self, request):
-        return render(request, 'home.html', {'user_form': CustomUserCreationForm})
+        return render(request, 'home.html', {'user_form': CustomUserCreationForm,
+                                             'pet_posts': PetPost.objects.all()})
     
     def post(self, request):
         if 'btn_login' in request.POST:
@@ -26,7 +28,8 @@ class HomeView(View):
                 error_message(request, 'Usuario/Email o Contraseña incorrectos.')
                 error = 'login'
             return render(request, 'home.html', {'user_form': CustomUserCreationForm,
-                                            'error': error})
+                                                 'error': error,
+                                                 'pet_posts': PetPost.objects.all()})
         else:
             user_form = CustomUserCreationForm(request.POST)
             if user_form.is_valid():
@@ -41,10 +44,12 @@ class HomeView(View):
                     error_message(request, 'Usuario/Email o Contraseña incorrectos.')
                     error = 'login'
                 return render(request, 'home.html', {'user_form': CustomUserCreationForm,
-                                                'error': error})
+                                                     'error': error,
+                                                     'pet_posts': PetPost.objects.all()})
             else:
                 return render(request, 'home.html', {'user_form': user_form,
-                                                    'error': 'new_user'})
+                                                     'error': 'new_user',
+                                                     'pet_posts': PetPost.objects.all()})
 
 
 

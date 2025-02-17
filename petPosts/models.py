@@ -54,7 +54,7 @@ class PetPost(models.Model):
     other_pet_color = models.CharField(max_length=20, blank=True, null=True)
     pet_name = models.CharField(max_length=20, blank=True, null=True)
     post_type = models.IntegerField(choices=POST_TYPES)
-    area = models.ManyToManyField(Area, related_name='pet_area')
+    area = models.ManyToManyField(Area, related_name='pet_area', default='ROSARIO')
     other_area = models.CharField(max_length=20, blank=True, null=True)
     post_message = models.CharField(max_length=500, validators=[MinLengthValidator(10)])
     post_img01 = models.ImageField(upload_to='post_images/')

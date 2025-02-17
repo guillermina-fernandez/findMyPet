@@ -8,6 +8,10 @@
     </head>
     <body>
         {% block content %}
+        {% for pp in pet_posts%}
+        <h1>HERE</h1>
+        <p>{{ pp.post_message }}</p>
+        {% endfor%}
         {% endblock %}
 
         {% block footer%}
