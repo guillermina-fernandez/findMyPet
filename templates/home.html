@@ -8,9 +8,58 @@
     </head>
     <body>
         {% block content %}
-        {% for pp in pet_posts%}
-        <h1>HERE</h1>
-        <p>{{ pp.post_message }}</p>
+        {% for pp in pet_posts %}
+        <div class="container mt-4 mb-4">
+            <div class="card shadow-sm border-3 pb-3 ps-3 pe-3 pt-3" style="max-width: 800px; margin: auto;">
+                <h5 class="card-title">{{ pp.post_title }}</h5>
+                <h6 class="text-end">{{ pp.user }} • {{ pp.post_date|date:'d/m/Y' }}</h6>
+                {% if pp.user.username == user_profile %}
+                <div class="w-100 text-end">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="optionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">ACCIONES</button>
+                    <ul class="dropdown-menu" aria-labelledby="optionsDropdown" style="background-color: #ffc107;">
+                        <li><button type="button" class="dropdown-item">Editar Post</button></li>
+                        <hr class="dropdown-divider">
+                        <li><button type="button" class="dropdown-item">Eliminar Post</button></li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div id="imageCarousel" class="carousel slide mt-3">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ pp.post_img01.url }}" class="d-block w-100" alt="Image 1" style="object-fit: contain; height: 400px;">
+                        </div>
+                        {% if pp.post_img02 %}
+                        <div class="carousel-item">
+                            <img src="{{ pp.post_img02.url }}" class="d-block w-100" alt="Image 2" style="object-fit: contain; height: 400px;">
+                        </div>
+                        {% endif %}
+                        {% if pp.post_img03 %}
+                        <div class="carousel-item">
+                            <img src="{{ pp.post_img03.url }}" class="d-block w-100" alt="Image 3" style="object-fit: contain; height: 400px;">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+                <div class="card-body">
+                    <p class="card-text" style="color: #333;">{{ pp.post_message }}</p>
+                    <p class="text-muted text-end" style="font-size: 14px;"></p>
+                    <div class="post-like-container text-end">
+                        <span id="likeCount" class="me-3">Reposteado {{ pp.post_likes }}</span>
+                        <button id="likeButton" class="btn btn-warning" onclick="repost()" style="margin-right: 10px;">
+                            🐾 Repostear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endfor%}
         {% endblock %}
 

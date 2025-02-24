@@ -11,6 +11,9 @@ class AuthenticationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.path.startswith('/media/'):
+            return self.get_response(request)
+        
         if not request.user.is_authenticated and request.path != reverse('home'):
             return redirect('home')
 
